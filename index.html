@@ -6,24 +6,21 @@
     <title>Guess the Number Game</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #e0f7fa;
             color: #333;
             text-align: center;
             margin: 0;
             padding: 50px;
         }
-
         h1 {
             color: #00796b;
             margin-bottom: 20px;
         }
-
         p {
             font-size: 18px;
             margin: 20px 0;
         }
-
         .container {
             max-width: 400px;
             margin: auto;
@@ -33,25 +30,32 @@
             background-color: #ffffff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
-
         input {
-            padding: 10px;
-            font-size: 16px;
+            padding: 15px; /* Increased padding for a bigger input box */
+            font-size: 20px; /* Increased font size for the input box */
             border: 2px solid #00796b;
             border-radius: 5px;
-            width: calc(100% - 22px);
+            width: calc(100% - 34px); /* Adjusted width to account for padding and border */
             margin-bottom: 10px;
             transition: border-color 0.3s;
         }
-
         input:focus {
             border-color: #004d40;
             outline: none;
         }
-
-        button {
-            padding: 10px 20px;
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #d32f2f;
+        }
+        .credits {
+            margin-top: 30px;
             font-size: 16px;
+            color: #00796b;
+        }
+        button {
+            padding: 15px 30px; /* Increased padding for larger button */
+            font-size: 18px; /* Increased font size for button */
             background-color: #00796b;
             color: white;
             border: none;
@@ -59,18 +63,10 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
-
         button:hover {
             background-color: #004d40;
             transform: scale(1.05);
         }
-
-        #result {
-            margin-top: 20px;
-            font-size: 20px;
-            color: #d32f2f;
-        }
-
         @media (max-width: 500px) {
             .container {
                 width: 90%;
@@ -79,16 +75,18 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>Guess the Number Game</h1>
         <p>I'm thinking of a number between 1 and 100.</p>
         <input type="number" id="guess" placeholder="Enter your guess" min="1" max="100">
         <button onclick="checkGuess()">Submit Guess</button>
         <div id="result"></div>
-        <button onclick="resetGame()">Play Again</button>
+        <button id="playAgainBtn" style="display: none;" onclick="resetGame()">Play Again</button>
+        <div class="credits">
+            <p>Created by Yorgo Waked</p>
+            <p>Email: <a href="mailto:yorgo.waked1@gmail.com">yorgo.waked1@gmail.com</a></p>
+        </div>
     </div>
-
     <script>
         let randomNumber = Math.floor(Math.random() * 100) + 1;
         let attempts = 0;
@@ -99,12 +97,18 @@
 
             if (userGuess < 1 || userGuess > 100) {
                 document.getElementById('result').innerText = "Please enter a number between 1 and 100.";
+                document.getElementById('guess').value = ''; // Reset input box
             } else if (userGuess < randomNumber) {
                 document.getElementById('result').innerText = "Too low! Try again.";
+                document.getElementById('guess').value = ''; // Reset input box
             } else if (userGuess > randomNumber) {
                 document.getElementById('result').innerText = "Too high! Try again.";
+                document.getElementById('guess').value = ''; // Reset input box
             } else {
                 document.getElementById('result').innerText = `Congratulations! You've guessed the number ${randomNumber} in ${attempts} attempts!`;
+                document.getElementById('playAgainBtn').style.display = 'block'; // Show Play Again button
+                document.getElementById('guess').style.display = 'none'; // Hide input box
+                document.querySelector("button[onclick='checkGuess()']").style.display = 'none'; // Hide submit button
             }
         }
 
@@ -113,8 +117,10 @@
             attempts = 0;
             document.getElementById('result').innerText = '';
             document.getElementById('guess').value = '';
+            document.getElementById('guess').style.display = 'block'; // Show input box
+            document.querySelector("button[onclick='checkGuess()']").style.display = 'inline-block'; // Show submit button
+            document.getElementById('playAgainBtn').style.display = 'none'; // Hide Play Again button
         }
     </script>
-
 </body>
 </html>
